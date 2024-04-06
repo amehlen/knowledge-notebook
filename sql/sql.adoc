@@ -1,0 +1,49 @@
+= SQL
+
+== Typen von SQL-Befehlen
+
+SQL-Befehle werden in fünf Kategorien unterteilt:
+
+* Data Definition Language (DDL)
+* Data Query Language (DQL)
+* Data Manipulation Language (DML)
+* Data Control Language (DCL)
+* Transaction Control Language (TCL)
+
+=== Data Definition Language (DDL)
+
+Die Befehle werden verwendet, um die Struktur des Datenbankschemas zu definieren.
+
+* CREATE
+* ALTER
+* DROP
+* TRUNCATE
+
+=== Data Query Language (DQL)
+
+Die Befehle werden verwendet, um Daten aus der Datenbank abzurufen.
+
+* SELECT
+
+=== Data Manipulation Language (DML)
+
+Die Befehle werden verwendet, um Daten in der Datenbank zu ändern.
+
+* INSERT
+* UPDATE
+* DELETE
+
+=== Data Control Language (DCL)
+
+Die Befehle werden verwendet, um den Zugang und die Berechtigungen von Benutzern auf der Datenbank zu kontrollieren.
+
+* GRANT
+* REVOKE
+
+=== Transaction Control Language (TCL)
+
+Die Befehle werden zur Verwaltung von Transaktionen in der Datenbank verwendet.
+
+* COMMIT
+* ROLLBACK
+* SAVEPOINT
