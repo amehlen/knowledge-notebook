@@ -89,4 +89,7 @@ fabric.properties
 !.idea/codeStyles
 !.idea/runConfigurations
 
+# Output folder created by the script for the conversion from asciidoc to pdf
+output
+
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all
