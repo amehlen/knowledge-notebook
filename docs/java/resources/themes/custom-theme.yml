@@ -1,0 +1,56 @@
+extends: default
+page:
+  layout: portrait
+  margin: [0.75in, 1in, 0.75in, 1in]
+  size: A4
+base:
+  font-color: #333333
+  font_family: Open Sans
+  font_size: 12
+  line_height_length: 20
+  align: justify
+#cover:
+#  image:
+#    align: center
+#    fit: cover
+link:
+  font_color: #009900
+heading:
+  font-color: #000000
+  font-size: 12
+  line-height: 1.2
+header:
+  height: 0.75in
+  line_height: 1
+  recto:
+    right:
+      content: '{document-title}'
+  verso:
+    left:
+      content: '{document-title}'
+footer:
+  font-size: 8
+  height: 0.75in
+  line_height: 1
+  recto:
+    right:
+      content: '{chapter-title} | *{page-number}*'
+  verso:
+    left:
+      content: '*{page-number}* | {chapter-title}'
+image:
+  align: center
+caption:
+  align: left
+  font-color: #000000
+  font-size: 10
+code:
+  background-color: #F5F5F5
+font:
+  catalog:
+    merge: true
+    Open Sans:
+      normal: OpenSans-Regular.ttf
+      bold: OpenSans-Bold.ttf
+      italic: OpenSans-Italic.ttf
+      bold_italic: OpenSans-BoldItalic.ttf

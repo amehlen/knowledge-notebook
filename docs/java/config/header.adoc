@@ -1,0 +1,12 @@
+:author: Allan Mehlen
+:toc: left
+:toclevels: 4
+:doctype: book
+:notitle:
+:icons: font
+:pdf-theme: custom-theme.yml
+:front-cover-image: image:resources/cover.svg[fit=cover]
+:source-highlighter: rouge
+:rouge-style: github
+:lang: de
+ifdef::lang[include::./attributes-{lang}.adoc[]]
