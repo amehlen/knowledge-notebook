@@ -4,3 +4,7 @@ include::./config/header.adoc[]
 == Einführung
 
 include::chapters/01-introduction.adoc[]
+
+== Variablen
+
+include::chapters/03-variables.adoc[]

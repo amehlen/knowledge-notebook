@@ -1,0 +1,66 @@
+// Asciidoc variables
+:plusmn: &#177;
+
+=== Elementare Datentypen
+
+Java kennt acht elementare Datentypen bzw. Primitive Data Types.
+
+[cols="20%,80%"]
+|===
+|Datentyp |Beschreibung
+
+|byte
+|ganze Zahl, 1 Byte, Zahlenbereich -128 bis +127
+
+|short
+|ganze Zahl, 2 Byte, Zahlenbereich -32.768 bis +32.767
+
+|int
+|ganze Zahl, 4 Byte, Zahlenbereich {plusmn}2^31^ (ca. 2 x {plusmn}10^9^)
+
+|long
+|ganze Zahl, 8 Byte, Zahlenbereich {plusmn}2^63^ (ca. 2 x {plusmn}10^18^)
+
+|boolean
+|true oder false
+
+|char
+|ein Unicode-Zeichen
+
+|double
+|Fließkommazahl, 8 Byte, 16 Stellen (max. ca. 3 x 10^308^)
+
+|float
+|Fließkommazahl, 4 Byte, 8 Stellen (max. ca. 3 x 10^38^)
+|===
+
+=== Wrapper Klassen
+
+[width=50%]
+|===
+|Datentyp |Boxing-Variante
+
+|byte
+|Byte
+
+|short
+|Short
+
+|int
+|Integer
+
+|long
+|Long
+
+|boolean
+|Boolean
+
+|char
+|Character
+
+|double
+|Double
+
+|float
+|Float
+|===
