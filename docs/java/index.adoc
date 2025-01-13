@@ -1,5 +1,6 @@
 = Java
 include::./config/header.adoc[]
+include::./config/variables.adoc[]
 
 == Einführung
 

@@ -1,6 +1,3 @@
-// Asciidoc variables
-:plusmn: &#177;
-
 === Elementare Datentypen
 
 Java kennt acht elementare Datentypen bzw. Primitive Data Types.
