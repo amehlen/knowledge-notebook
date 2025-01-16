@@ -1,0 +1,338 @@
+Ein Functional Interface ist ein Interface mit genau einer abstrakten Methode (Single Abstract Method (SAM)).
+
+.Beispiel
+[source,java]
+----
+@FunctionalInterface
+public interface Calculator {
+    int calculate(int a, int b);
+}
+----
+
+Die Annotation `@FunctionalInterface` ist optional, aber sie sorgt dafür, dass der Compiler sicherstellt, dass das Interface die Regeln eines Functional Interfaces erfüllt. Wird eine zweite abstrakte Methode hinzugefügt, führt dies zu einem Compiler-Fehler.
+
+.Beispiel
+[source,java]
+----
+@FunctionalInterface
+interface MyFunctionalInterface {
+    void firstAbstractMethod();
+
+    // Würde zu einem Fehler führen:
+    // void secondAbstractMethod();
+}
+----
+
+Neben der abstrakten Methode können Functional Interfaces auch *default* oder *static* Methoden enthalten, um zusätzliche Funktionalität bereitzustellen.
+
+.Beispiel
+[source,java]
+----
+@FunctionalInterface
+public interface Calculator {
+    int calculate(int a, int b);
+
+    default void printResult(int a, int b) {
+        int result = calculate(a, b);
+        System.out.println("The result of the operation is: " + result);
+    }
+
+    static void printInfo() {
+        System.out.println("This is a custom functional interface with default and static methods");
+    }
+}
+----
+
+=== Vordefinierte funktionale Schnittstellen
+
+Java bietet eine Reihe von vordefinierten *Functional Interfaces* im Paket `java.util.function`.
+
+==== Supplier
+
+* Beschreibung: Gibt ein Objekt vom Typ `T` zurück, ohne ein Argument zu benötigen.
+* Methode: `T get()`
+
+.Syntax
+[source,java]
+----
+@FunctionalInterface
+public interface Supplier<T> {
+    T get();
+}
+----
+
+==== Consumer
+
+* Beschreibung: Nimmt ein Objekt vom Typ `T`, ohne einen Wert zurückzugeben
+* Methode: `void accept(T t)`
+
+.Syntax
+[source,java]
+----
+@FunctionalInterface
+public interface Consumer<T> {
+    void accept(T t);
+}
+----
+
+*Verkettung von Consumer*
+
+Mit `andThen()` lassen sich mehrere Aktionen hintereinander ausführen.
+
+.Beispiel
+[source,java]
+----
+public class ConsumerVerkettung {
+    public static void main(String[] args) {
+        Consumer<String> drucken = s -> System.out.println("Drucke: " + s);
+        Consumer<String> speichern = s -> System.out.println("Speichere: " + s);
+
+        // Zuerst drucken, dann speichern
+        Consumer<String> druckeUndSpeichere = drucken.andThen(speichern);
+
+        druckeUndSpeichere.accept("Hallo Java");
+        // Ausgabe: Drucke: Hallo Java
+        //          Speichere: Hallo Java
+    }
+}
+----
+
+==== BiConsumer
+
+* Beschreibung: Nimmt zwei Objekte vom Typ `T` und `U`, ohne einen Wert zurückzugeben
+* Methode: `void accept(T t, U u)`
+
+.Syntax
+[source,java]
+----
+@FunctionalInterface
+public interface BiConsumer<T, U>{
+    void accept(T t, U u);
+}
+----
+
+*Verkettung von BiConsumer*
+
+* `andThen(BiConsumer after)`: Führt nach der aktuellen Aktion eine weitere BiConsumer-Aktion aus.
+
+.Beispiel
+[source,java]
+----
+public class BiConsumerBeispiel {
+    public static void main(String[] args) {
+        BiConsumer<String, Integer> drucken = (name, alter) ->
+            System.out.println(name + " ist " + alter + " Jahre alt.");
+
+        BiConsumer<String, Integer> verdoppeln = (name, alter) ->
+            System.out.println(name + " wäre in doppeltem Alter " + (alter * 2));
+
+        // Verkettung von Aktionen
+        BiConsumer<String, Integer> kombiniert = drucken.andThen(verdoppeln);
+
+        kombiniert.accept("Anna", 25);
+        // Ausgabe: Anna ist 25 Jahre alt.
+        //          Anna wäre in doppeltem Alter 50
+    }
+}
+----
+
+==== Function
+
+* Beschreibung: Verarbeitet ein Objekt vom Typ `T` und liefert als Ergebnis ein Objekt vom Typ `R`.
+* Methode: `R apply(T t)`
+
+.Syntax
+[source,java]
+----
+@FunctionalInterface
+public interface Function<T,R> {
+    R apply(T t);
+}
+----
+
+*Verkettung von Function*
+
+Mit `andThen()` wird die aktuelle Funktion ausgeführt und das Ergebnis in die nächste Funktion gegeben. Mit `compose()` wird die nächste Funktion zuerst ausgeführt und deren Ergebnis dann in die aktuelle Funktion eingespeist.
+
+.Beispiel
+[source,java]
+----
+public class FunctionVerkettung {
+    public static void main(String[] args) {
+        Function<Integer, Integer> verdoppeln = n -> n * 2;
+        Function<Integer, Integer> quadrieren = n -> n * n;
+
+        // Zuerst verdoppeln, dann quadrieren
+        Function<Integer, Integer> verdoppleDannQuadriere = verdoppeln.andThen(quadrieren);
+
+        // Zuerst quadrieren, dann verdoppeln
+        Function<Integer, Integer> quadriereDannVerdopple = verdoppeln.compose(quadrieren);
+
+        System.out.println(verdoppleDannQuadriere.apply(3));  // (3 * 2)^2 = 36
+        System.out.println(quadriereDannVerdopple.apply(3));  // (3^2) * 2 = 18
+    }
+}
+----
+
+==== BiFunction
+
+* Beschreibung: Verarbeitet zwei Objekte vom Typ `T` und `U` und gibt als Ergebnis ein Objekt vom Typ `R` zurück.
+* Methode: `R apply(T t, U u)`
+
+.Syntax
+[source,java]
+----
+@FunctionalInterface
+public interface BiFunction<T, U, R>{
+    R apply(T t, U u);
+}
+----
+
+*Verkettung von BiFunction*
+
+Mit `andThen()` kann das Ergebnis einer BiFunction weiterverarbeitet werden.
+
+.Beispiel
+[source,java]
+----
+public class BiFunctionVerkettung {
+    public static void main(String[] args) {
+        BiFunction<Integer, Integer, Integer> summiere = (a, b) -> a + b;
+        Function<Integer, String> alsString = n -> "Ergebnis: " + n;
+
+        BiFunction<Integer, Integer, String> kombiniert = summiere.andThen(alsString);
+
+        System.out.println(kombiniert.apply(3, 4));  // Ergebnis: 7
+    }
+}
+----
+
+==== Predicate
+
+* Beschreibung: Überprüft, ob ein Objekt vom Typ `T` ein Kriterium erfüllt und gibt das Ergebnis als `boolean` zurück.
+* Methode: `boolean test(T t)`
+
+.Syntax
+[source,java]
+----
+@FunctionalInterface
+public interface Predicate<T> {
+    boolean test(T t);
+}
+----
+
+*Verkettung von Predicate*
+
+Mit `and()`, `or()` und `negate()` können mehrere Bedingungen kombiniert werden:
+
+* *and()* – Nur true, wenn beide Prädikate true ergeben.
+* *or()* – true, wenn mindestens eines der Prädikate true ergibt.
+* *negate()* – Kehrt das Ergebnis eines Prädikats um.
+
+.Beispiel
+[source,java]
+----
+public class PredicateVerkettung {
+    public static void main(String[] args) {
+        Predicate<String> istNichtLeer = s -> !s.isEmpty();
+        Predicate<String> istLang = s -> s.length() > 5;
+
+        // Kombiniert: nicht leer und länger als 5 Zeichen
+        Predicate<String> istGueltig = istNichtLeer.and(istLang);
+
+        // Leer oder lang
+        Predicate<String> istLeerOderLang = istNichtLeer.negate().or(istLang);
+
+        System.out.println(istGueltig.test("Hallo"));  // false
+        System.out.println(istGueltig.test("Hallo Welt"));  // true
+        System.out.println(istLeerOderLang.test(""));  // true
+        System.out.println(istLeerOderLang.test("Hi"));  // false
+    }
+}
+----
+
+==== BiPredicate
+
+* Beschreibung: Überprüft, ob zwei Objekte vom Typ `T` und `U` ein Kriterium erfüllen und gibt das Ergebnis als `boolean` zurück.
+* Methode: `boolean test(T t, U u)`
+
+.Syntax
+[source,java]
+----
+@FunctionalInterface
+public interface BiPredicate<T, U>{
+    boolean test(T t, U u);
+}
+----
+
+*Verkettung von BiPredicate*
+
+* `and(BiPredicate other)`: Prüft, ob beide BiPredicate-Bedingungen true sind.
+* `or(BiPredicate other)`: Prüft, ob mindestens eine der BiPredicate-Bedingungen true ist.
+* `negate()`: Kehrt das Ergebnis der Prüfung um.
+
+.Beispiel
+[source,java]
+----
+public class BiPredicateVerkettung {
+    public static void main(String[] args) {
+        BiPredicate<Integer, Integer> groesser = (a, b) -> a > b;
+        BiPredicate<Integer, Integer> gleich = (a, b) -> a.equals(b);
+
+        // Verkettung: a ist größer oder gleich b
+        BiPredicate<Integer, Integer> groesserOderGleich = groesser.or(gleich);
+
+        System.out.println(groesserOderGleich.test(5, 3));  // true
+        System.out.println(groesserOderGleich.test(3, 3));  // true
+        System.out.println(groesserOderGleich.test(2, 3));  // false
+    }
+}
+----
+
+==== UnaryOperator
+
+* Beschreibung: Eine spezielle Form von `Function`, die ein Objekt von Typ `T` nimmt und ein Ergebnis des gleichen Typs zurückgibt.
+* Methode: `T apply(T t)`
+
+.Syntax
+[source,java]
+----
+@FunctionalInterface
+public interface UnaryOperator<T>{
+    T apply(T t);
+}
+----
+
+*Verkettung von UnaryOperator*
+
+Ein UnaryOperator ist eine spezielle Function, die Eingabe und Ausgabe desselben Typs hat. Die Verkettung erfolgt wie bei Function mit `andThen()` oder `compose()`.
+
+.Beispiel
+[source,java]
+----
+public class UnaryOperatorVerkettung {
+    public static void main(String[] args) {
+        UnaryOperator<Integer> addiereZwei = n -> n + 2;
+        UnaryOperator<Integer> multipliziereMitDrei = n -> n * 3;
+
+        UnaryOperator<Integer> kombiniert = addiereZwei.andThen(multipliziereMitDrei);
+
+        System.out.println(kombiniert.apply(5));  // (5 + 2) * 3 = 21
+    }
+}
+----
+
+==== BinaryOperator
+
+* Beschreibung: Eine spezielle Form von BiFunction, die zwei Objekte desselben Typs `T` nimmt und ein Ergebnis des gleichen Typs zurückgibt.
+* Methode: `T apply(T t1, T t2)`
+
+.Beispiel
+[source,java]
+----
+@FunctionalInterface
+public interface BinaryOperator<T>{
+    T apply(T t1, T t2);
+}
+----
+

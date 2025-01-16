@@ -9,3 +9,7 @@ include::chapters/01-introduction.adoc[]
 == Variablen
 
 include::chapters/03-variables.adoc[]
+
+== Functional Interfaces
+
+include::chapters/04-functional-interfaces.adoc[]
